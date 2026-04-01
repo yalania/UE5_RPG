@@ -4,14 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+#include "Characters/BaseCharacter.h"
+
 #include "PlayerCharacter.generated.h"
 
 class UInputAction;
 class UInputMappingContext;
+class UPlayerAttributeSet;
 struct FInputActionValue;
 
 UCLASS()
-class UE5_RPG_API APlayerCharacter : public ACharacter
+class UE5_RPG_API APlayerCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -38,20 +42,14 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
-	// End of APawn interface
+	UPROPERTY(VisibleAnywhere, Category = Attributes)
+	const UPlayerAttributeSet* PlayerAttributeSet;
+
 	UPROPERTY(EditAnywhere)
 	class USpringArmComponent* SpringArmComponent = nullptr;
 
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* CameraComponent = nullptr;
-
-	//Propaby move to some stats sheets or something
-	UPROPERTY(EditAnywhere, Category = Stats)
-	float MaxHealth = 500.0f;
-	UPROPERTY(EditAnywhere, Category = Stats)
-	float MaxMana = 500.0f;
-	UPROPERTY(EditAnywhere, Category = Stats)
-	float MaxStamina = 200.0f;
 
 	// Inputs
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
