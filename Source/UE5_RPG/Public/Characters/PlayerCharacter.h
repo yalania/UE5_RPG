@@ -12,6 +12,7 @@
 class UInputAction;
 class UInputMappingContext;
 class UPlayerAttributeSet;
+class UPlayerAbilitiesSet;
 struct FInputActionValue;
 
 UCLASS()
@@ -26,6 +27,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void InitAbilitySystem();
 
 public:	
 	// Called every frame
@@ -36,11 +38,17 @@ public:
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 	
 protected:
+	void OnAbilityInputPressed(int32 InputID);
+	void OnAbilityInputReleased(int32 InputID);
+
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Abilities")
+	TObjectPtr<UPlayerAbilitiesSet> PlayerAbilitiesSet;
 
 	UPROPERTY(VisibleAnywhere, Category = Attributes)
 	const UPlayerAttributeSet* PlayerAttributeSet;
@@ -51,6 +59,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* CameraComponent = nullptr;
 
+	UPROPERTY(EditAnywhere)
+	class UEquipmentComponent* EquipmentComponent = nullptr;
+	
 	// Inputs
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
@@ -62,6 +73,5 @@ protected:
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
-
-
+	
 };

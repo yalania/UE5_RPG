@@ -4,12 +4,14 @@
 #include "Characters/PlayerCharacter.h"
 
 #include "GameplayAbilitySystem/Attributes/PlayerAttributeSet.h"
+#include "GameplayAbilitySystem/Data/PlayerAbilitiesSet.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Components/EquipmentComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -23,6 +25,7 @@ APlayerCharacter::APlayerCharacter()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
+	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>("Equipment");
 	PlayerAttributeSet = CreateDefaultSubobject<UPlayerAttributeSet>(TEXT("PlayerAttributes"));
 }
 
@@ -30,7 +33,23 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	InitAbilitySystem();
+}
+
+void APlayerCharacter::InitAbilitySystem()
+{
+	if (PlayerAbilitiesSet && HasAuthority())
+	{
+		constexpr int32 AbilityLevel = 1;
+		for (const FInputAbilityInfo& InputAbility : PlayerAbilitiesSet->GetInputAbilities())
+		{
+			if (InputAbility.IsValid())
+			{
+				const FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(InputAbility.GameplayAbilityClass, AbilityLevel, GetTypeHash(InputAbility));
+				AbilitySystemComponent->GiveAbility(AbilitySpec);
+			}
+		}
+	}
 }
 
 // Called every frame
@@ -63,6 +82,22 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
+
+		// Abilities
+		if (PlayerAbilitiesSet != nullptr)
+		{
+			for (const FInputAbilityInfo& InputAbility : PlayerAbilitiesSet->GetInputAbilities())
+			{
+				if (InputAbility.IsValid())
+				{
+					const UInputAction* InputAction = InputAbility.InputAction;
+					const int32 InputID = GetTypeHash(InputAbility);
+
+					EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Started, this, &APlayerCharacter::OnAbilityInputPressed, InputID);
+					EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Completed, this, &APlayerCharacter::OnAbilityInputReleased, InputID);
+				}
+			}
+		}
 	}
 	else
 	{
@@ -70,6 +105,21 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	}
 }
 
+void APlayerCharacter::OnAbilityInputPressed(int32 InputID)
+{
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->AbilityLocalInputPressed(InputID);
+	}
+}
+
+void APlayerCharacter::OnAbilityInputReleased(int32 InputID)
+{
+	if (AbilitySystemComponent)
+	{
+		AbilitySystemComponent->AbilityLocalInputReleased(InputID);
+	}
+}
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {

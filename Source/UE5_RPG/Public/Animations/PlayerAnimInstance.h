@@ -15,11 +15,13 @@ class UE5_RPG_API UPlayerAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 public:
 	 void NativeUpdateAnimation(float DeltaSeconds) override;
+	
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UBlendSpace* StrafeBlendSpace = nullptr;
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float CurrentSpeed = 0.0f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float CurrentDirection = 0.0f;
-	
 };
