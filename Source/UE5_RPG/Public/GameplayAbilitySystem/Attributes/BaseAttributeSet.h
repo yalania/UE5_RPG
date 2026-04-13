@@ -24,4 +24,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData MaxHealth = 100.0f;
 	ATTRIBUTE_ACCESSORS_BASIC(UBaseAttributeSet, MaxHealth);
+	
+	void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
+	void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 };

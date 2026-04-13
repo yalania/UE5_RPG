@@ -24,4 +24,16 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attributes")
 	FGameplayAttributeData MaxStamina = 50.0f;
 	ATTRIBUTE_ACCESSORS_BASIC(UPlayerAttributeSet, MaxStamina);
+	
+	//Healing Flask
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attributes")
+	FGameplayAttributeData HealingFlaskAmount = 3;
+	ATTRIBUTE_ACCESSORS_BASIC(UPlayerAttributeSet, HealingFlaskAmount);
+ 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Attributes")
+	FGameplayAttributeData MaxHealingFlaskAmount = 3;
+	ATTRIBUTE_ACCESSORS_BASIC(UPlayerAttributeSet, MaxHealingFlaskAmount);
+	
+	void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
+	void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 };
