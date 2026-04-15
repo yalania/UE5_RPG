@@ -3,8 +3,8 @@
 
 #include "Components/EquipmentComponent.h"
 
+#include "Characters/BaseCharacter.h"
 #include "Combat/Weapons/BaseWeapon.h"
-#include "GameFramework/Character.h"
 
 // Sets default values for this component's properties
 UEquipmentComponent::UEquipmentComponent()
@@ -39,17 +39,26 @@ void UEquipmentComponent::UnequipWeapon()
 	UnspawnEquippedWeapon();
 }
 
+ABaseWeapon* UEquipmentComponent::GetEquippedWeapon() const
+{
+	return SpawnedEquippedWeapon;
+}
+
 void UEquipmentComponent::SpawnEquippedWeapon()
 {
-	SpawnedEquippedWeapon = Cast<ABaseWeapon>(GetWorld()->SpawnActor(EquippedWeaponClass));
+	ABaseCharacter* OwnerCharacter = Cast<ABaseCharacter>(GetOwner());
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Instigator = OwnerCharacter;
+	SpawnParams.Owner = GetOwner();
+	SpawnedEquippedWeapon = Cast<ABaseWeapon>(GetWorld()->SpawnActor(EquippedWeaponClass, &GetOwner()->GetActorTransform(),SpawnParams));
 	if (SpawnedEquippedWeapon == nullptr)
 	{
 		return;
 	}
 	
-	if (ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner()))
+	if (OwnerCharacter != nullptr)
 	{
-		SpawnedEquippedWeapon->Sheathe(*OwnerCharacter);
+		SpawnedEquippedWeapon->ApplyProperties(*OwnerCharacter);
 	}
 }
 
@@ -60,9 +69,9 @@ void UEquipmentComponent::UnspawnEquippedWeapon()
 		return;
 	}
 	
-	if (ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner()))
+	if (const ABaseCharacter* OwnerCharacter = Cast<ABaseCharacter>(GetOwner()))
 	{
-		SpawnedEquippedWeapon->Unsheathe(*OwnerCharacter);
+		SpawnedEquippedWeapon->ClearProperties(*OwnerCharacter);
 	}
 	SpawnedEquippedWeapon->Destroy();
 }

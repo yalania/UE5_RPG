@@ -4,7 +4,8 @@
 #include "Combat/Weapons/BaseWeapon.h"
 
 #include "Animations/PlayerAnimInstance.h"
-#include "GameFramework/Character.h"
+#include "Characters/BaseCharacter.h"
+#include "Components/HitboxComponent.h"
 
 // Sets default values
 ABaseWeapon::ABaseWeapon()
@@ -14,12 +15,16 @@ ABaseWeapon::ABaseWeapon()
 
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	WeaponMesh->SetupAttachment(GetRootComponent());
+	SetRootComponent(WeaponMesh);
+	
+	HitboxComponent = CreateDefaultSubobject<UHitboxComponent>(TEXT("Hitbox"));
+	HitboxComponent->SetupAttachment(GetRootComponent());
 }
 
-void ABaseWeapon::Sheathe(ACharacter& WeaponOwner)
+void ABaseWeapon::ApplyProperties(const ABaseCharacter& WeaponOwner)
 {
 	WeaponMesh->SetVisibility(true);
+	GrantedAbilities = WeaponOwner.GrantAbilities(WeaponAbilities);
 	if (USkeletalMeshComponent* CharacterMesh = WeaponOwner.GetMesh())
 	{
 		AttachToComponent(CharacterMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, EquippedSocketName);
@@ -28,9 +33,11 @@ void ABaseWeapon::Sheathe(ACharacter& WeaponOwner)
 		OwnerAnimInstance->StrafeBlendSpace = StrafeBlendSpace;
 	}
 }
-void ABaseWeapon::Unsheathe(ACharacter& WeaponOwner)
+
+void ABaseWeapon::ClearProperties(const ABaseCharacter& WeaponOwner)
 {
 	WeaponMesh->SetVisibility(false);
+	WeaponOwner.RemoveAbilities(GrantedAbilities);
 	if (const USkeletalMeshComponent* CharacterMesh = WeaponOwner.GetMesh())
 	{
 		DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);

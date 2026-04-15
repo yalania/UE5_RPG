@@ -3,13 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayAbilitySpecHandle.h"
 #include "GameFramework/Actor.h"
 #include "BaseWeapon.generated.h"
 
-class ACharacter;
+class ABaseCharacter;
 class UBlendSpace;
 class UGameplayAbility;
 class UPlayerAnimInstance;
+class UHitboxComponent;
 
 UCLASS()
 class UE5_RPG_API ABaseWeapon : public AActor
@@ -20,14 +22,20 @@ public:
 	// Sets default values for this actor's properties
 	ABaseWeapon();
 	
-	void Sheathe(ACharacter& WeaponOwner);
-	void Unsheathe(ACharacter& WeaponOwner);
+	void ApplyProperties(const ABaseCharacter& WeaponOwner);
+	void ClearProperties(const ABaseCharacter& WeaponOwner);
 private:
 	UPROPERTY(EditAnywhere)
 	USkeletalMeshComponent* WeaponMesh = nullptr;
 	
+	UPROPERTY(EditAnywhere)
+	UHitboxComponent* HitboxComponent = nullptr;
+	
 	UPROPERTY(EditAnywhere, Category= "Abilities")
-	TArray<UGameplayAbility*> GrantedAbilities;
+	TArray<TSubclassOf<UGameplayAbility>> WeaponAbilities;
+	
+	UPROPERTY(VisibleAnywhere, Category= "Abilities")
+	TArray<FGameplayAbilitySpecHandle> GrantedAbilities;
 	
 	UPROPERTY(EditAnywhere, Category= "Animation")
 	FName EquippedSocketName;
