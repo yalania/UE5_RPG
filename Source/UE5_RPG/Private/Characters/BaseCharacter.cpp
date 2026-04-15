@@ -20,10 +20,26 @@ UAbilitySystemComponent *ABaseCharacter::GetAbilitySystemComponent() const
     return AbilitySystemComponent;
 }
 
-// Called when the game starts or when spawned
-void ABaseCharacter::BeginPlay()
+TArray<FGameplayAbilitySpecHandle> ABaseCharacter::GrantAbilities(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses) const
 {
-	Super::BeginPlay();
+	TArray<FGameplayAbilitySpecHandle> AbilityHandleSpecs;
+	for (const auto& AbilityClass : AbilityClasses)
+	{
+		const FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1, -1);
+		AbilityHandleSpecs.Add(AbilitySystemComponent->GiveAbility(AbilitySpec));	
+	}
+	
+	return AbilityHandleSpecs;
+}
+
+void ABaseCharacter::RemoveAbilities(TArray<FGameplayAbilitySpecHandle>& AbilitySpecHandles) const
+{
+	for (const auto& AbilitySpecHandle : AbilitySpecHandles)
+	{
+		AbilitySystemComponent->ClearAbility(AbilitySpecHandle);
+	}
+	
+	AbilitySpecHandles.Empty();
 }
 
 void ABaseCharacter::PossessedBy(AController *NewController)

@@ -40,11 +40,11 @@ void APlayerCharacter::InitAbilitySystem()
 {
 	if (PlayerAbilitiesSet && HasAuthority())
 	{
-		constexpr int32 AbilityLevel = 1;
 		for (const FInputAbilityInfo& InputAbility : PlayerAbilitiesSet->GetInputAbilities())
 		{
 			if (InputAbility.IsValid())
 			{
+				constexpr int32 AbilityLevel = 1;
 				const FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(InputAbility.GameplayAbilityClass, AbilityLevel, GetTypeHash(InputAbility));
 				AbilitySystemComponent->GiveAbility(AbilitySpec);
 			}

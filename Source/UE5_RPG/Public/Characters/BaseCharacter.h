@@ -11,6 +11,8 @@
 #include "BaseCharacter.generated.h"
 
 class UBaseAttributeSet;
+class UGameplayAbility;
+struct FGameplayAbilitySpecHandle;
 
 UCLASS()
 class UE5_RPG_API ABaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -22,9 +24,12 @@ public:
 
 	// IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+		
+	// Gameplay Abilities
+	TArray<FGameplayAbilitySpecHandle> GrantAbilities(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses) const;
+	void RemoveAbilities(TArray<FGameplayAbilitySpecHandle>& AbilitySpecHandles) const;
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 
