@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 
 #include "AbilitySystemInterface.h"
+#include "GameplayTagContainer.h"
 
 #include "BaseCharacter.generated.h"
 
@@ -21,6 +22,7 @@ class UE5_RPG_API ABaseCharacter : public ACharacter, public IAbilitySystemInter
 public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
+	void BeginPlay();
 
 	// IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -28,11 +30,22 @@ public:
 	// Gameplay Abilities
 	TArray<FGameplayAbilitySpecHandle> GrantAbilities(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses) const;
 	void RemoveAbilities(TArray<FGameplayAbilitySpecHandle>& AbilitySpecHandles) const;
+	
+	//To override
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	virtual void HandleDeath();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
-
+	
+	void InitAbilitySystemComponent();
+	void OnDeathStateChanged(FGameplayTag GameplayTag, int Count);
+	
+	UPROPERTY(EditAnywhere, Category = "InputAbilityInfo")
+	TArray<TSubclassOf<UGameplayAbility>> StartingGameplayAbilities;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Abilities)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 

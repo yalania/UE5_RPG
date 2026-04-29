@@ -26,5 +26,6 @@ public:
 	ATTRIBUTE_ACCESSORS_BASIC(UBaseAttributeSet, MaxHealth);
 	
 	void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
-	void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+	void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 };
