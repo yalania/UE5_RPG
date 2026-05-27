@@ -62,6 +62,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UEquipmentComponent* EquipmentComponent = nullptr;
 	
+	UPROPERTY(EditAnywhere)
+	class ULockOnTargetComponent* LockOnTargetComponent = nullptr;
+	
 	// Inputs
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;

@@ -35,6 +35,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	virtual void HandleDeath();
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Damage")
+	bool IsDead() const { return bIsDead; }
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void PossessedBy(AController* NewController) override;
@@ -52,4 +55,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Attributes)
 	const UBaseAttributeSet* BaseAttributeSet;
 
+private:
+	bool bIsDead = false;
 };

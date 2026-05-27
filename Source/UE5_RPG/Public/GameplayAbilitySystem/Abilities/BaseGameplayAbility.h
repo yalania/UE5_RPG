@@ -15,5 +15,4 @@ class UE5_RPG_API UBaseGameplayAbility : public UGameplayAbility
 	GENERATED_BODY()
 	
 	UBaseGameplayAbility();
-	
 };

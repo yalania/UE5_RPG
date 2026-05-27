@@ -3,6 +3,8 @@
 
 #include "Animations/PlayerAnimInstance.h"
 
+#include "KismetAnimationLibrary.h"
+
 void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
     const APawn* SelfPawn = TryGetPawnOwner();
@@ -12,5 +14,5 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
     }
 
     CurrentSpeed = static_cast<float>(SelfPawn->GetVelocity().Length());
-    CurrentDirection = CalculateDirection(SelfPawn->GetVelocity(), SelfPawn->GetActorRotation());
+    CurrentDirection = UKismetAnimationLibrary::CalculateDirection(SelfPawn->GetVelocity(), SelfPawn->GetActorRotation());
 }

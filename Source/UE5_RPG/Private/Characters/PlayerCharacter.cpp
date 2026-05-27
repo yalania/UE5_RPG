@@ -12,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Components/EquipmentComponent.h"
+#include "Components/LockOnTargetComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -26,6 +27,7 @@ APlayerCharacter::APlayerCharacter()
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
 	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>("Equipment");
+	LockOnTargetComponent = CreateDefaultSubobject<ULockOnTargetComponent>(TEXT("LockOnTargetComponent"));
 	PlayerAttributeSet = CreateDefaultSubobject<UPlayerAttributeSet>(TEXT("PlayerAttributes"));
 }
 

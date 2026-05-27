@@ -3,6 +3,8 @@
 
 #include "GameplayAbilitySystem/Abilities/BaseGameplayAbility.h"
 
+#include "AbilitySystemComponent.h"
+
 UBaseGameplayAbility::UBaseGameplayAbility()
 {
 	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag("State.Death"));

@@ -57,6 +57,7 @@ void ABaseCharacter::HandleDeath()
 	GetCharacterMovement()->DisableMovement();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetSimulatePhysics(true);
+	bIsDead = true;
 	
 	UE_LOG(LogTemp, Warning, TEXT("HandleDeath called on: %s"), *GetName());
 }
