@@ -6,6 +6,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/EquipmentComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 ABaseCharacter::ABaseCharacter() 
@@ -15,6 +16,8 @@ ABaseCharacter::ABaseCharacter()
 	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystem"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->ReplicationMode = EGameplayEffectReplicationMode::Minimal;
+	
+	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>("Equipment");
 	
 	BaseAttributeSet = CreateDefaultSubobject<UBaseAttributeSet>(TEXT("BaseAttributes"));
 }

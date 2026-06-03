@@ -11,6 +11,7 @@
 
 #include "BaseCharacter.generated.h"
 
+class UEquipmentComponent;
 class UBaseAttributeSet;
 class UGameplayAbility;
 struct FGameplayAbilitySpecHandle;
@@ -51,6 +52,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Abilities)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	
+	UPROPERTY(EditAnywhere)
+	UEquipmentComponent* EquipmentComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = Attributes)
 	const UBaseAttributeSet* BaseAttributeSet;

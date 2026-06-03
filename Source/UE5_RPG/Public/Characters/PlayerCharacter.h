@@ -9,6 +9,11 @@
 
 #include "PlayerCharacter.generated.h"
 
+class UInteractManagerComponent;
+class ULockOnTargetComponent;
+class UEquipmentComponent;
+class UCameraComponent;
+class USpringArmComponent;
 class UInputAction;
 class UInputMappingContext;
 class UPlayerAttributeSet;
@@ -54,17 +59,15 @@ protected:
 	const UPlayerAttributeSet* PlayerAttributeSet;
 
 	UPROPERTY(EditAnywhere)
-	class USpringArmComponent* SpringArmComponent = nullptr;
+	USpringArmComponent* SpringArmComponent = nullptr;
 
 	UPROPERTY(EditAnywhere)
-	class UCameraComponent* CameraComponent = nullptr;
+	UCameraComponent* CameraComponent = nullptr;
 
 	UPROPERTY(EditAnywhere)
-	class UEquipmentComponent* EquipmentComponent = nullptr;
+	ULockOnTargetComponent* LockOnTargetComponent = nullptr;
 	
-	UPROPERTY(EditAnywhere)
-	class ULockOnTargetComponent* LockOnTargetComponent = nullptr;
-	
+	UInteractManagerComponent* InteractManagerComponent = nullptr;
 	// Inputs
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;

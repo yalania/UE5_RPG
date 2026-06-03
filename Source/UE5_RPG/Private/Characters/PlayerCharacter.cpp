@@ -12,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "Components/EquipmentComponent.h"
+#include "Components/InteractManagerComponent.h"
 #include "Components/LockOnTargetComponent.h"
 
 // Sets default values
@@ -25,9 +26,9 @@ APlayerCharacter::APlayerCharacter()
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComponent->SetupAttachment(SpringArmComponent);
-
-	EquipmentComponent = CreateDefaultSubobject<UEquipmentComponent>("Equipment");
+	
 	LockOnTargetComponent = CreateDefaultSubobject<ULockOnTargetComponent>(TEXT("LockOnTargetComponent"));
+	InteractManagerComponent = CreateDefaultSubobject<UInteractManagerComponent>(TEXT("InteractManagerComponent"));
 	PlayerAttributeSet = CreateDefaultSubobject<UPlayerAttributeSet>(TEXT("PlayerAttributes"));
 }
 

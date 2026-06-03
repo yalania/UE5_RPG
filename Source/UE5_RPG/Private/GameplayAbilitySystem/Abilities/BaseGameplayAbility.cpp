@@ -7,5 +7,5 @@
 
 UBaseGameplayAbility::UBaseGameplayAbility()
 {
-	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag("State.Death"));
+	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag("GameplayAbility.States.Death"));
 }
