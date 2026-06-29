@@ -20,4 +20,7 @@ public:
 	
 	UPROPERTY(VisibleAnywhere)
 	UStateTreeAIComponent* StateTreeAIComponent;
+	
+	void Stop(const FString& Reason);
+	void Restart();
 };

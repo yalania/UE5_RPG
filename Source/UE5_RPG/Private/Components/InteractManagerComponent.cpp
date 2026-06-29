@@ -41,6 +41,16 @@ void UInteractManagerComponent::EndPlay(const EEndPlayReason::Type EndPlayReason
 	Super::EndPlay(EndPlayReason);
 }
 
+bool UInteractManagerComponent::InteractWithCurrentInteractable()
+{
+	if (CurrentInteractable == nullptr)
+	{
+		return false;
+	}
+	
+	return IInteractable::Execute_Interact(CurrentInteractable, GetOwner());
+}
+
 void UInteractManagerComponent::SearchInteractiveObjects()
 {
 	const UWorld* World = GetWorld();

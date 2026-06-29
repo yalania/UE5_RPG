@@ -3,6 +3,10 @@
 
 #include "Core/Actors/CheckpointActor.h"
 
+#include "AbilitySystemComponent.h"
+#include "GameplayTagContainer.h"
+#include "Core/World/CheckpointSubsystem.h"
+
 
 // Sets default values
 ACheckpointActor::ACheckpointActor()
@@ -11,11 +15,15 @@ ACheckpointActor::ACheckpointActor()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-bool ACheckpointActor::Interact_Implementation()
+bool ACheckpointActor::Interact_Implementation(AActor* InteractingActor)
 {
 	if (bIsActive)
 	{
-		//Do Stuff
+		//For now just revive enemies
+		if (UCheckpointSubsystem* CheckpointSubsystem = GetWorld()->GetSubsystem<UCheckpointSubsystem>())
+		{
+			CheckpointSubsystem->ResetEnemies();
+		}
 	}
 	else
 	{

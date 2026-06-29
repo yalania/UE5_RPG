@@ -21,13 +21,13 @@ class UE5_RPG_API IInteractable
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool Interact();
+	bool Interact(AActor* InteractingActor);
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	FText GetInteractPromptText() const;
 	
 private:
-	virtual bool Interact_Implementation() = 0;
+	virtual bool Interact_Implementation(AActor* InteractingActor) = 0;
 	virtual FText GetInteractPromptText_Implementation() const = 0;
 };
 

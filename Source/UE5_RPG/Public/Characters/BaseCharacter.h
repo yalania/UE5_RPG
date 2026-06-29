@@ -23,7 +23,8 @@ class UE5_RPG_API ABaseCharacter : public ACharacter, public IAbilitySystemInter
 public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
-	void BeginPlay();
+
+	virtual void BeginPlay() override;
 
 	// IAbilitySystemInterface
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -35,9 +36,12 @@ public:
 	//To override
 	UFUNCTION(BlueprintCallable, Category = "Damage")
 	virtual void HandleDeath();
-
+	
+	UFUNCTION(BlueprintCallable, Category = "Damage")
+	virtual void HandleRevive();
+	
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Damage")
-	bool IsDead() const { return bIsDead; }
+	bool IsDead() const;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -58,7 +62,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = Attributes)
 	const UBaseAttributeSet* BaseAttributeSet;
-
+	
 private:
-	bool bIsDead = false;
+	FGameplayTag DeathStateTag;
 };

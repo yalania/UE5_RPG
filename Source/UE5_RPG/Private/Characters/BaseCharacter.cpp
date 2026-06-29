@@ -60,14 +60,28 @@ void ABaseCharacter::HandleDeath()
 	GetCharacterMovement()->DisableMovement();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetSimulatePhysics(true);
-	bIsDead = true;
 	
 	UE_LOG(LogTemp, Warning, TEXT("HandleDeath called on: %s"), *GetName());
+}
+
+void ABaseCharacter::HandleRevive()
+{
+	GetMesh()->SetSimulatePhysics(false);
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	
+	UE_LOG(LogTemp, Warning, TEXT("HandleRevive called on: %s"), *GetName());
+}
+
+bool ABaseCharacter::IsDead() const
+{
+	return AbilitySystemComponent->GetTagCount(DeathStateTag) > 0;
 }
 
 void ABaseCharacter::PossessedBy(AController *NewController)
 {
 	Super::PossessedBy(NewController);
+	DeathStateTag = FGameplayTag::RequestGameplayTag("State.Death");
 	InitAbilitySystemComponent();
 }
 
@@ -82,7 +96,7 @@ void ABaseCharacter::InitAbilitySystemComponent()
 	if(AbilitySystemComponent != nullptr)
 	{
 		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-		AbilitySystemComponent->RegisterGameplayTagEvent(FGameplayTag::RequestGameplayTag("State.Death"), EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ABaseCharacter::OnDeathStateChanged);
+		AbilitySystemComponent->RegisterGameplayTagEvent(DeathStateTag, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &ABaseCharacter::OnDeathStateChanged);
 	
 		GrantAbilities(StartingGameplayAbilities);
 	}
@@ -93,5 +107,9 @@ void ABaseCharacter::OnDeathStateChanged(FGameplayTag GameplayTag, int Count)
 	if (Count > 0)
 	{
 		HandleDeath();
+	}
+	else
+	{
+		HandleRevive();
 	}
 }

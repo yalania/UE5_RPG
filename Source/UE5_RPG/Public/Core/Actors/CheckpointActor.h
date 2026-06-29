@@ -23,7 +23,7 @@ public:
 	FText PromptTextWhenActive = INVTEXT("Use Checkpoint");
 
 private:
-	virtual bool Interact_Implementation() override;
+	virtual bool Interact_Implementation(AActor* InteractingActor) override;
 	virtual FText GetInteractPromptText_Implementation() const override;
 	
 	UPROPERTY(SaveGame)

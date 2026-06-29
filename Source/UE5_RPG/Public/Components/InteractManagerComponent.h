@@ -26,6 +26,9 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Interact")
+	bool InteractWithCurrentInteractable();
+	
 	UPROPERTY(VisibleAnywhere, Category = "Interact")
 	TEnumAsByte<ECollisionChannel> InteractTraceChannel = ECC_GameTraceChannel2;
 	
