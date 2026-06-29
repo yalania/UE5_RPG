@@ -10,7 +10,7 @@
 void UCheckpointSubsystem::ResetEnemies()
 {
 	TArray<AActor*> FoundActors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), TSubclassOf<AEnemyCharacter>(), FoundActors);
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AEnemyCharacter::StaticClass(), FoundActors);
 	
 	for (AActor* Actor : FoundActors)
 	{
@@ -20,8 +20,8 @@ void UCheckpointSubsystem::ResetEnemies()
 			continue;
 		}
 		
-		FGameplayTagContainer DeathAbilityTagContainer;
-		DeathAbilityTagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("GameplayAbility.Reset")));
-		AbilitySystemComponent->TryActivateAbilitiesByTag(DeathAbilityTagContainer);;
+		FGameplayTagContainer ReviveAbilityTagContainer;
+		ReviveAbilityTagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("GameplayAbility.States.Revive")));
+		AbilitySystemComponent->TryActivateAbilitiesByTag(ReviveAbilityTagContainer);;
 	}
 }

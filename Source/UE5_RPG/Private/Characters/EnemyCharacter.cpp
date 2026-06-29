@@ -26,7 +26,7 @@ void AEnemyCharacter::HandleRevive()
 {
 	Super::HandleRevive();
 	
-	TeleportTo(InitialTransform.GetLocation(), InitialTransform.Rotator());
+	SetActorTransform(InitialTransform);
 	if (AIController != nullptr)
 	{
 		AIController->Restart();

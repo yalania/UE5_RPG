@@ -20,6 +20,8 @@ class UE5_RPG_API IInteractable
 	GENERATED_BODY()
 
 public:
+	virtual bool CanInteract(AActor* InteractingActor) { return true;};
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool Interact(AActor* InteractingActor);
 	

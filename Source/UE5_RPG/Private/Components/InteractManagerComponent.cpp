@@ -66,7 +66,11 @@ void UInteractManagerComponent::SearchInteractiveObjects()
 	AActor* NewInteractable = nullptr;
 	if (Hit.bBlockingHit && IsValid(CurrentActor) && CurrentActor->Implements<UInteractable>())
 	{
-		NewInteractable = CurrentActor;
+		IInteractable* InteractableInterface = Cast<IInteractable>(CurrentActor);
+		if (InteractableInterface != nullptr &&w InteractableInterface->CanInteract(GetOwner()))
+		{
+			NewInteractable = CurrentActor;
+		}
 	}
 
 	if (NewInteractable != CurrentInteractable)

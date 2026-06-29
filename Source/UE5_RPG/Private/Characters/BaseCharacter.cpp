@@ -25,6 +25,8 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	MeshInitialTransform = GetMesh()->GetRelativeTransform();
 }
 
 // IAbilitySystemInterface
@@ -67,8 +69,9 @@ void ABaseCharacter::HandleDeath()
 void ABaseCharacter::HandleRevive()
 {
 	GetMesh()->SetSimulatePhysics(false);
-	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	GetMesh()->SetRelativeTransform(MeshInitialTransform);
 	
 	UE_LOG(LogTemp, Warning, TEXT("HandleRevive called on: %s"), *GetName());
 }

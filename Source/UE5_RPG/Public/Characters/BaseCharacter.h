@@ -43,6 +43,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Damage")
 	bool IsDead() const;
 	
+	UPROPERTY(VisibleAnywhere, Category = Attributes)
+	const UBaseAttributeSet* BaseAttributeSet;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void PossessedBy(AController* NewController) override;
@@ -59,10 +62,8 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	UEquipmentComponent* EquipmentComponent = nullptr;
-
-	UPROPERTY(VisibleAnywhere, Category = Attributes)
-	const UBaseAttributeSet* BaseAttributeSet;
 	
 private:
 	FGameplayTag DeathStateTag;
+	FTransform MeshInitialTransform;
 };
